@@ -26,6 +26,11 @@ enum spi_nor_option_flags {
 	SNOR_F_USE_UPAGE	= BIT(3),
 };
 
+enum flash_lock_status {
+	SF_UNLOCKED		= 0,
+	SF_LOCKED		= 1,
+};
+
 #define SPI_FLASH_3B_ADDR_LEN		3
 #define SPI_FLASH_CMD_LEN		(1 + SPI_FLASH_3B_ADDR_LEN)
 #define SPI_FLASH_16MB_BOUN		0x1000000
@@ -87,6 +92,19 @@ enum spi_nor_option_flags {
 
 /* SST specific */
 #ifdef CONFIG_SPI_FLASH_SST
+#define SST26_CMD_READ_BPR		0x72
+#define SST26_CMD_WRITE_BPR		0x42
+
+#define SST26_BPR_8K_NUM		4
+#define SST26_MAX_BPR_REG_LEN		(18 + 1)
+#define SST26_BOUND_REG_SIZE		((32 + SST26_BPR_8K_NUM * 8) * SZ_1K)
+
+enum lock_ctl {
+	CTL_LOCK,
+	CTL_UNLOCK,
+	CTL_CHECK
+};
+
 # define CMD_SST_BP		0x02    /* Byte Program */
 # define CMD_SST_AAI_WP		0xAD	/* Auto Address Incr Word Program */
 
